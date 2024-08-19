@@ -1,12 +1,58 @@
 #!ipxe
-###
-### netboot.xyz-custom menu
-###
 
 :start
-echo Hello world!
-sleep 10
-goto custom_exit
 
-:custom_exit
-exit 0
+iseq ${cls} serial && goto ignore_cls ||
+set cls:hex 1b:5b:4a  # ANSI clear screen sequence - "^[[J"
+set cls ${cls:string}
+:ignore_cls
+
+isset ${menu} && goto ${menu} ||
+
+isset ${ip} || dhcp
+
+:main_menu
+clear menu
+set space:hex 20:20
+set space ${space:string}
+item --gap Default:
+item mac_autoinstall ${space} MAC Address Autoinstall
+item local ${space} Boot from local hdd
+item --gap netboot.rstms.net
+item rstms_openbsd75 OpenBSD 7.5
+item rstms_debian12 Debian 12 bookworm
+item --gap netboot.xyz
+item netboot_xyz netboot.xyz menu
+item --gap Tools:
+item shell ${space} iPXE shell
+
+:error
+echo Error occured, press any key to return to menu ...
+prompt
+goto main_menu
+
+:mac_autoinstall
+chain --autofree http://netboot.rstms.net/${net0/mac}.ipxe || error
+goto main_menu
+
+:rstms_openbsd75
+chain --autofree http://netboot.rstms.net/${net0/mac}.ipxe || error
+goto main_menu
+
+:mac_autoinstall
+chain --autofree http://netboot.rstms.net/${net0/mac}.ipxe || error
+goto main_menu
+
+:netboot_xyz:
+chain --autofree https://boot.netboot.xyz
+goto main_menu
+
+:local
+echo Booting from local disks ...
+exit 1
+
+:shell
+echo Type "exit" to return to menu.
+set menu main_menu
+shell
+goto main_menu
