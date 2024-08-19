@@ -1,5 +1,7 @@
 #!ipxe
 
+echo "howdy"
+
 :start
 
 iseq ${cls} serial && goto ignore_cls ||
