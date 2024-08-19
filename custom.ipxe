@@ -36,11 +36,11 @@ chain --autofree http://netboot.rstms.net/${net0/mac}.ipxe || error
 goto main_menu
 
 :rstms_openbsd75
-chain --autofree http://netboot.rstms.net/${net0/mac}.ipxe || error
+chain --autofree http://netboot.rstms.net/rstms-netboot-openbsd.ipxe || error
 goto main_menu
 
 :mac_autoinstall
-chain --autofree http://netboot.rstms.net/${net0/mac}.ipxe || error
+chain --autofree http://netboot.rstms.net/rstms-netboot-debian || error
 goto main_menu
 
 :netboot_xyz:
