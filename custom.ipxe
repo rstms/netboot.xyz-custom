@@ -1,6 +1,8 @@
 #!ipxe
 
 echo "rstms netboot menu"
+echo "version 0.0.1"
+
 set cmdline console=ttyS1,115200n8
 dhcp
 
