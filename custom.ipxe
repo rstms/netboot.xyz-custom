@@ -1,8 +1,8 @@
 #!ipxe
 
 echo "rstms netboot menu"
-
-isset ${ip} || dhcp
+set cmdline console=ttyS1,115200n8
+dhcp
 
 :main_menu
 set space:hex 20:20
@@ -45,6 +45,5 @@ exit 1
 
 :shell
 echo Type "exit" to return to menu.
-set menu main_menu
 shell
 goto main_menu
