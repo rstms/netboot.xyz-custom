@@ -4,7 +4,7 @@ echo "rstms netboot menu"
 echo "version 0.0.3"
 
 set cmdline console=ttyS1,115200n8
-dhcp
+dhcp || echo "dhcp failed"
 
 :main_menu
 set space:hex 20:20
@@ -33,7 +33,7 @@ goto main_menu
 chain --autofree http://netboot.rstms.net/rstms-netboot-openbsd.ipxe || error
 goto main_menu
 
-:mac_autoinstall
+:rstms_debian12
 chain --autofree http://netboot.rstms.net/rstms-netboot-debian.ipxe || error
 goto main_menu
 
