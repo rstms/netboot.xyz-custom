@@ -1,6 +1,6 @@
 #!ipxe
 
-echo "rstms netboot menu v0.0.4"
+echo "rstms netboot menu v0.0.5"
 
 #set cmdline console=ttyS1,115200n8
 dhcp || echo "dhcp failed"
