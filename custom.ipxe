@@ -1,12 +1,12 @@
 #!ipxe
 
-echo "rstms netboot menu"
-echo "version 0.0.4"
+echo "rstms netboot menu v0.0.4"
 
-set cmdline console=ttyS1,115200n8
+#set cmdline console=ttyS1,115200n8
 dhcp || echo "dhcp failed"
 
 :main_menu
+clear main_menu_choice
 set space:hex 20:20
 set space ${space:string}
 item --gap Default:
@@ -19,6 +19,11 @@ item --gap netboot.xyz
 item netboot_xyz netboot.xyz menu
 item --gap Tools:
 item shell ${space} iPXE shell
+choose main_menu_choice || goto menu_exit
+echo ${cls}
+goto ${main_menu_choice}
+goto main_menu
+
 
 :error
 echo Error occured, press any key to return to menu ...
@@ -27,19 +32,18 @@ goto main_menu
 
 :mac_autoinstall
 chain --autofree http://netboot.rstms.net/${net0/mac}.ipxe || error
-goto main_menu
 
 :rstms_openbsd75
 chain --autofree http://netboot.rstms.net/rstms-netboot-openbsd.ipxe || error
-goto main_menu
+goto error
 
 :rstms_debian12
 chain --autofree http://netboot.rstms.net/rstms-netboot-debian.ipxe || error
-goto main_menu
+goto error
 
 :netboot_xyz:
 chain --autofree https://boot.netboot.xyz
-goto main_menu
+goto error
 
 :local
 echo Booting from local disks ...
@@ -49,3 +53,6 @@ exit 1
 echo Type "exit" to return to menu.
 shell
 goto main_menu
+
+:menu_exit
+exit
